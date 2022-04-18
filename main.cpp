@@ -41,7 +41,7 @@ int main()
         cout << "Insert successful" << endl;
       }
     }
-    else if(strcmp(input, "remove") == 0)
+    /*else if(strcmp(input, "remove") == 0)
     {
       cout << "Number?" << endl;
       cin.getline(input, 100);
@@ -56,7 +56,7 @@ int main()
         cout << "This number is in the tree" << endl;
       }
       else cout << "This number is not in the tree :(" << endl;
-    }
+    } */
     else if(strcmp(input, "display") == 0)
     {
       tree->display();
