@@ -71,10 +71,10 @@ void Tree::fixInsert(Node* child)
     caseThree(child);
   }
   //4. uncle is black 
-  else if(strcmp(child->parent->sibling->color, "black") == 0)
+  else if(child->parent->sibling == NULL || strcmp(child->parent->sibling->color, "black") == 0) //NULL is black
   {
     Node* grandpa = child->parent->parent;
-    if(child->parent == grandpa->left && child == child->parent->right) //parent is left of grandpa and child is right of parent
+    if(grandpa != NULL && child->parent == grandpa->left && child == child->parent->right) //parent is left of grandpa and child is right of parent
     {
       //tree rotation - child goes to parent's spot 
       Node* oldParent = child->parent;
@@ -86,12 +86,21 @@ void Tree::fixInsert(Node* child)
       //parent becomes the left child of child
       child->left = oldParent;
       oldParent->parent = child;
-      oldParent->sibling = child->right;
-      
+      oldParent->sibling = child->right; 
     }
-    else if(child->parent == grandpa->right && child == child->parent->left) //parent is right of grandpa and child is left of parent
+    else if(grandpa != NULL && child->parent == grandpa->right && child == child->parent->left) //parent is right of grandpa and child is left of parent
     {
-      
+      //tree rotation - child goes to parent's spot 
+      Node* oldParent = child->parent;
+      grandpa->right = child;
+      child->parent = grandpa;
+      child->sibling = grandpa->left;
+      //right child of child becomes left child of parent
+      oldParent->left = child->right;
+      //parent becomes the right child of child
+      child->right = oldParent;
+      oldParent->parent = child;
+      oldParent->sibling = child->left; 
     }
   }
 }
