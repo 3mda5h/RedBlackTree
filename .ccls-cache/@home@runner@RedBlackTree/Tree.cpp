@@ -11,11 +11,11 @@ Tree::Tree()
 
 void Tree::insert(int number)
 {
-  insert_impl(root, NULL, number); 
+  insert_impl(root, number); 
 }
 
 //insert a node into tree maintaining red black property
-void Tree::insert_impl(Node* current, Node* parent, int number)
+void Tree::insert_impl(Node* current, int number)
 {
   //1. inserting root - root must be black
   if(root == NULL)
@@ -32,20 +32,16 @@ void Tree::insert_impl(Node* current, Node* parent, int number)
     {
       if(current->right != NULL)
       {
-        insert_impl(current->right, current, number);
+        insert_impl(current->right, number);
       }
-      //2. parent is red
-      else if(strcmp(current->color, "red") == 0) //insert new node in empty slot
+      else //insert new node in empty slot
       {
-        Node* newNode = new Node();
-        newNode->number = number;
-        current->right = newNode;
-        if(current->left != NULL) newNode->sibling = current->left;
-      }
-      //3. parent and uncle are red - change parent and uncle to black, grandparent to red
-      else
-      {
-        
+        Node* newChild = new Node();
+        newChild->number = number;
+        newChild->parent = current;
+        if(current->left != NULL) newChild->sibling = current->left;
+        current->right = newChild;
+        if(strcmp(current->color, "red") != 0) fixInsert(newChild);  //else: case 2. parent is red, don't need to fix colors
       }
     }
     else //number is less than or equal to current
@@ -56,11 +52,38 @@ void Tree::insert_impl(Node* current, Node* parent, int number)
       }
       else
       {
-        Node* newNode = new Node();
-        newNode->number = number;
-        current->left = newNode;
-        if(current->right != NULL) newNode->sibling = current->right;
+        Node* newChild = new Node();
+        newChild->number = number;
+        newChild->parent = current;
+        if(current->right != NULL) newChild->sibling = current->right;
+        current->left = newChild;
       }
     }
+  }
+}
+
+void fixInsertion(Node* newChild)
+{
+  //3. parent and uncle of newChild are red - change parent and uncle to black, grandparent to red
+  if(strcmp(newChild->parent->color, "red") == 0 && strcmp(newChild->parent->sibling->color, "red") == 0)
+  {
+    caseThree(newChild);
+  }
+  //4. uncle is black 
+  else if(strcmp(newChild->sibling->color, "black") == 0)
+  {
+    
+  }
+}
+
+//3. parent and uncle of newChild are red - change parent and uncle to black, grandparent to red
+void caseThree(Node* newChild)
+{
+  if(newChild != NULL)
+  {
+    newChild->parent->color = "black"; 
+    newChild->parent->sibling->color = "black"; //uncle
+    newChild->parent->parent->color = "red"; //grandpa
+    caseThree(newChild->parent->parent);
   }
 }
