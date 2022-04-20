@@ -127,7 +127,7 @@ void Tree::fixInsert(Node* node)
       //parent becomes the right child of node
       node->right = oldParent;
       oldParent->parent = node;
-      oldParent->sibling = node->left; 
+      oldParent->sibling = node->left;   
     }
     if(grandpa != NULL && node->parent == grandpa->right && node == node->parent->right) //parent rght node right
     {
