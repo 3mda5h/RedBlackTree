@@ -1,10 +1,11 @@
-/* red black tree = bst but:
+/* red black tree - bst but:
      - A node is either red or black.
      - The root is black.
      - All leaves (NULL) are black.
      - Both children of every red node are black.
      - Every simple path from a given node to any of its descendant leaves contains the same number of black nodes.
-  balances the bst
+  this balances the bst
+for some reason this is
 */
 
 #include <iostream>

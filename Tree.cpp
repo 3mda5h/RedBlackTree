@@ -40,10 +40,9 @@ void Tree::insert_impl(Node* current, int number)
         Node* newChild = new Node();
         newChild->number = number;
         newChild->parent = current;
-        if(current->left != NULL) newChild->sibling = current->left;
+        newChild->sibling = current->left;
         current->right = newChild;
-        newChild->color = "black";
-        if(strcmp(current->color, "red") != 0) fixInsert(newChild);  //else: case 2. parent is red, don't need to fix colors
+        if(strcmp(current->color, "black") != 0) fixInsert(newChild);  //else: case 2. parent is red, don't need to fix colors
         else cout << "case 2" << endl;
       }
     }
@@ -58,10 +57,9 @@ void Tree::insert_impl(Node* current, int number)
         Node* newChild = new Node();
         newChild->number = number;
         newChild->parent = current;
-        if(current->right != NULL) newChild->sibling = current->right;
+        newChild->sibling = current->right;
         current->left = newChild;
-        newChild->color = "black";
-        if(strcmp(current->color, "red") != 0) fixInsert(newChild);
+        if(strcmp(current->color, "black") != 0) fixInsert(newChild);
         else cout << "case 2" << endl;
       }
     }
@@ -71,7 +69,7 @@ void Tree::insert_impl(Node* current, int number)
 void Tree::fixInsert(Node* node)
 {
   //3. parent and uncle of node are red - change parent and uncle to black, grandparent to red
-  if(strcmp(node->parent->color, "red") == 0 && strcmp(node->parent->sibling->color, "red") == 0)
+  if(strcmp(node->parent->color, "red") == 0 && node->parent->sibling != NULL && strcmp(node->parent->sibling->color, "red") == 0)
   {
     cout << "case 3 hehe" << endl;
     caseThree(node);
@@ -83,6 +81,7 @@ void Tree::fixInsert(Node* node)
     Node* grandpa = node->parent->parent;
     if(grandpa != NULL && node->parent == grandpa->left && node == node->parent->right) //parent is left of grandpa and node is right of parent
     {
+      cout << "tree rotation weeee" << endl;
       //tree rotation - node goes to parent's spot 
       Node* oldParent = node->parent;
       grandpa->left = node;
@@ -94,7 +93,10 @@ void Tree::fixInsert(Node* node)
       node->left = oldParent;
       oldParent->parent = node;
       oldParent->sibling = node->right; 
-       //5 - left left  - after case 4 - grandparent and uncle are black
+    }
+    if(grandpa != NULL && node->parent == grandpa->left && node == node->parent->left) // parent left node left
+    {
+      //5 - after case 4 - grandparent and uncle are black
       //grandparent becomes red, parent becomes black
       node = node->left;
       grandpa->color = "red";
@@ -114,6 +116,7 @@ void Tree::fixInsert(Node* node)
     }
     else if(grandpa != NULL && node->parent == grandpa->right && node == node->parent->left) //parent is right of grandpa and node is left of parent
     {
+      cout << "tree rotation weeee" << endl;
       //tree rotation - node goes to parent's spot 
       Node* oldParent = node->parent;
       grandpa->right = node;
@@ -125,7 +128,10 @@ void Tree::fixInsert(Node* node)
       node->right = oldParent;
       oldParent->parent = node;
       oldParent->sibling = node->left; 
-      //5 - right right - after case 4 - grandparent and uncle are black
+    }
+    if(grandpa != NULL && node->parent == grandpa->right && node == node->parent->right) //parent rght node right
+    {
+      //5 - after case 4 - grandparent and uncle are black
       //grandparent becomes red, parent becomes black
       node = node->right;
       grandpa->color = "red";
@@ -149,12 +155,13 @@ void Tree::fixInsert(Node* node)
 //3. parent and uncle of newChild are red - change parent and uncle to black, grandparent to red
 void Tree::caseThree(Node* newChild)
 {
-  if(newChild != NULL)
+  if(newChild != NULL && newChild->parent != NULL)
   {
     newChild->parent->color = "black"; 
     newChild->parent->sibling->color = "black"; //uncle
-    newChild->parent->parent->color = "red"; //grandpa
-    caseThree(newChild->parent->parent);
+    Node* grandpa = newChild->parent->parent;
+    if(grandpa != NULL) grandpa->color = "red";
+    caseThree(grandpa);
   }
 }
 
