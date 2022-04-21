@@ -5,7 +5,7 @@
      - Both children of every red node are black.
      - Every simple path from a given node to any of its descendant leaves contains the same number of black nodes.
   this balances the bst
-for some reason this is
+for some reason this is important
 */
 
 #include <iostream>
