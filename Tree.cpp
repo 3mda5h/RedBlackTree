@@ -95,9 +95,8 @@ void Tree::fixInsert(Node* node)
       oldParent->parent = node;
       oldParent->sibling = node->right; 
     }
-    if(grandpa != NULL && node->parent == grandpa->left && node == node->parent->left) // parent left node left
+    if(node->parent == grandpa->left && node == node->parent->left) // parent left node left
     {
-      
       cout << "case 5" << endl;
       //5 - after case 4 - grandparent and uncle are black
       //grandparent becomes red, parent becomes black
@@ -124,7 +123,7 @@ void Tree::fixInsert(Node* node)
         node->parent->parent = NULL;
       }    
     }
-    else if(grandpa != NULL && node->parent == grandpa->right && node == node->parent->left) //parent is right of grandpa and node is left of parent
+    else if(node->parent == grandpa->right && node == node->parent->left) //parent is right of grandpa and node is left of parent
     {
     cout << "case 4 heheh" << endl;
       //tree rotation - node goes to parent's spot 
