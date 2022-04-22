@@ -108,6 +108,7 @@ void Tree::fixInsert(Node* node)
       {
         if(grandpa == grandpa->parent->right) grandpa->parent->right = node->parent; //if grandpa was right of his parent
         else grandpa->parent->left = node->parent;
+        node->parent->parent = grandpa->parent;
       }
       //right child of parent transfers to left child of grandpa
       grandpa->left = node->parent->right;
@@ -117,7 +118,11 @@ void Tree::fixInsert(Node* node)
       grandpa->sibling = node;
       grandpa->parent = node->parent;
       node->sibling = grandpa;
-      if(root == grandpa) root = node->parent; //if granpa was old root
+      if(root == grandpa) //if granpa was old root
+      {
+        root = node->parent;
+        node->parent->parent = NULL;
+      }    
     }
     else if(grandpa != NULL && node->parent == grandpa->right && node == node->parent->left) //parent is right of grandpa and node is left of parent
     {
@@ -146,6 +151,7 @@ void Tree::fixInsert(Node* node)
       {
         if(grandpa == grandpa->parent->right) grandpa->parent->right = node->parent; //if grandpa was right of his parent
         else grandpa->parent->left = node->parent;
+        node->parent->parent = grandpa->parent;
       }
       //left child of parent transfers to right child of grandpa
       grandpa->right = node->parent->left;
@@ -155,7 +161,11 @@ void Tree::fixInsert(Node* node)
       grandpa->sibling = node;
       grandpa->parent = node->parent;
       node->sibling = grandpa;
-      if(root == grandpa) root = node->parent; //if granpa was old root
+      if(root == grandpa) //if granpa was old root
+      {
+        root = node->parent;
+        node->parent->parent = NULL;
+      }
     }
   }
 }
@@ -163,7 +173,7 @@ void Tree::fixInsert(Node* node)
 //3. parent and uncle of node are red - change parent and uncle to black, grandparent to red
 void Tree::caseThree(Node* node)
 {
-  if(node != NULL && node->parent != NULL)
+  if(node != NULL && node->parent != NULL && node->parent != root)
   {
     node->parent->color = "black"; 
     node->parent->sibling->color = "black"; //uncle

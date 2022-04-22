@@ -1,10 +1,10 @@
-/* red black tree - bst but:
+/* red black tree - binary search tree but:
      - A node is either red or black.
      - The root is black.
      - All leaves (NULL) are black.
      - Both children of every red node are black.
      - Every simple path from a given node to any of its descendant leaves contains the same number of black nodes.
-  this balances the bst
+this balances the bst
 for some reason this is important
 */
 
@@ -108,6 +108,7 @@ void fileInput(Tree* tree)
   }
   while (file >> number) //reads in ints from file till end of file reached
   {
+    cout << "inserting number" << endl;
     tree->insert(number);
   }
   cout << "Input successful" << endl;
