@@ -21,10 +21,11 @@ class Tree
   Tree();
   void insert(int number);
   void insert_impl(Node* current, int number); //implementation functions so main doesn't have to acess root
-  void fixInsert(Node* newChild, Node* sibling);
-  //void fixInsert(Node* newChild);
-  //void caseThree(Node* current);
-  void caseThree(Node* current, Node* uncle);
+  //void fixInsert(Node* newChild, Node* sibling);
+  void fixInsert(Node* newChild);
+  void caseThree(Node* current);
+  void caseFour(Node* current);
+  //void caseThree(Node* current, Node* uncle);
   Node* search(int number);
   void remove(int number);
   void display();

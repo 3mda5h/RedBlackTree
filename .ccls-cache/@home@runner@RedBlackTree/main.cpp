@@ -108,7 +108,7 @@ void fileInput(Tree* tree)
   }
   while (file >> number) //reads in ints from file till end of file reached
   {
-    cout << "inserting number" << endl;
+    cout << "inserting number " << number << endl;
     tree->insert(number);
   }
   cout << "Input successful" << endl;
