@@ -78,14 +78,18 @@ void Tree::fixInsert(Node* node)
 {
   Node* parent = node->parent;
   Node* grandpa = parent->parent;
+  cout << "beggining of fixinsert: node is " << node->number << endl;
+  cout << "parent is " << parent->number << endl;
   //3. parent and uncle of node are red - change parent and uncle to black, grandparent to red
-  if(strcmp(parent->color, "red") == 0 && parent->sibling != NULL && strcmp(parent->sibling->color, "red") == 0)
-  {
+  if(strcmp(node->color, "red") == 0 && strcmp(parent->color, "red") == 0 && parent->sibling != NULL && strcmp(parent->sibling->color, "red") == 0)
+  {    
     display();
     cout << "case 3" << endl;
     caseThree(node);
+    cout << "we're done with case 3 now were fixing" << endl;
     //fix tree higher up
     Node* current = grandpa;
+    cout << "current is " << current->number << endl;
     if(grandpa->parent != NULL && grandpa->parent->parent != NULL) fixInsert(current);
     while(current->parent != NULL && current->parent->parent != NULL)
     {
@@ -233,7 +237,6 @@ if(node != NULL && node->parent != NULL && node->parent->sibling != NULL && strc
     display();
     caseThree(grandpa);
   }
-  else cout << "does not meet conditions" << endl;
 }
 
 void Tree::display()
