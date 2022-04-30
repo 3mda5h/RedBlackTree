@@ -230,6 +230,8 @@ void Tree::fixInsert(Node* node)
   else uncle = grandpa->left; 
   cout << "beggining of fixinsert: node is " << node->number << endl;
   cout << "parent is " << parent->number << endl;
+  if(uncle != NULL) cout << "uncle is " << uncle->number << endl;
+  if(grandpa != NULL) cout << "grandpa is " << grandpa->number << endl;
   //3. parent and uncle of node are red - change parent and uncle to black, grandparent to red
   if(strcmp(node->color, "red") == 0 && strcmp(parent->color, "red") == 0 && uncle != NULL && strcmp(uncle->color, "red") == 0)
   {    
@@ -239,12 +241,10 @@ void Tree::fixInsert(Node* node)
     cout << "we're done with case 3 now were fixing" << endl;
     //fix tree higher up
     Node* current = grandpa;
-    cout << "current is " << current->number << endl;
-    if(grandpa->parent != NULL && grandpa->parent->parent != NULL) fixInsert(current);
-    while(current->parent != NULL && current->parent->parent != NULL)
+    while(current != NULL && current->parent != NULL && current->parent->parent != NULL)
     {
-      current = current->parent;
       fixInsert(current);
+      current = current->parent;
     }
   }
   else if(strcmp(node->color, "red") == 0 && strcmp(parent->color, "red") == 0 && (uncle == NULL || strcmp(uncle->color, "black") == 0)) //NULL is black
@@ -259,11 +259,12 @@ void Tree::fixInsert(Node* node)
       node->parent = grandpa;
       //left child of node becomes right child of parent
       parent->right = node->left;
+      if(parent->right != NULL) parent->right->parent = parent;
       //parent becomes the right child of node
       node->left = parent;
       parent->parent = node;
-      if(node->right != NULL) node->right->parent = node;
-      node = node->left; //node is now the child of node (what used to be the parent of node)
+      //update parent and node pointers
+      node = node->left; 
       parent = node->parent;
       //update uncle
       if(parent == grandpa->left) uncle = grandpa->right;
@@ -272,6 +273,7 @@ void Tree::fixInsert(Node* node)
       cout << "his parent is " << node->parent->number << endl;
       if(uncle != NULL) cout << "his uncle is " << uncle->number << endl;
       display();
+      cout << "---------" << endl;
     }
     else if(parent == grandpa->right && node == parent->left) //parent is right of grandpa and node is left of parent
     {
@@ -280,21 +282,23 @@ void Tree::fixInsert(Node* node)
       //tree rotation - node goes to parent's spot 
       grandpa->right = node;
       node->parent = grandpa;
-      //right child of node becomes left child of parent
+      //left child of node becomes right child of parent
       parent->left = node->right;
+      if(parent->left != NULL) parent->left->parent = parent;
       //parent becomes the right child of node
       node->right = parent;
       parent->parent = node;
-      if(parent->left != NULL) node->left->parent = node;
-      node = node->right; //node is now the child of node (what used to be the parent of node)
+      //update parent and node pointers
+      node = node->right; 
       parent = node->parent;
-      //update uncle 
+      //update uncle
       if(parent == grandpa->left) uncle = grandpa->right;
       else uncle = grandpa->left;
       cout << "node is now " << node->number << endl;
       cout << "his parent is " << node->parent->number << endl;
       if(uncle != NULL) cout << "his uncle is " << uncle->number << endl;
       display();
+      cout << "----------" << endl;
     }
     if(node->parent == grandpa->left && node == parent->left) // parent left node left
     {
@@ -319,6 +323,8 @@ void Tree::fixInsert(Node* node)
       grandpa->parent = parent;
       if(root == grandpa) root = parent; //if granpa was old root parent is now root
       display();
+      cout << "----------" << endl;
+
     }
     if(node->parent == grandpa->right && node == parent->right) //parent rght node right
     {
@@ -343,6 +349,7 @@ void Tree::fixInsert(Node* node)
       grandpa->parent = parent;
       if(root == grandpa) root = parent; //if granpa was old root parent is now root
       display();
+      cout << "----------" << endl;
     }
   }
 }
@@ -350,17 +357,18 @@ void Tree::fixInsert(Node* node)
 //3. parent and uncle of node are red - change parent and uncle to black, grandparent to red
 void Tree::caseThree(Node* node)
 {
-  if(node != NULL && node->parent != NULL)
+  if(node != NULL && node->parent != NULL && node->parent->parent != NULL)
   {
     Node* grandpa = node->parent->parent;
     Node* uncle;
-    if(node == grandpa->left) uncle = grandpa->right;
+    if(node->parent == grandpa->left) uncle = grandpa->right;
     else uncle = grandpa->left;
     if(uncle != NULL && strcmp(node->parent->color, "red") == 0 && strcmp(uncle->color, "red") == 0)
     {
+      cout << "case threee" << endl;
       cout << "node is " << node->number << endl;
       node->parent->color = "black";       
-      if(uncle != NULL) uncle->color = "black";
+      uncle->color = "black";
       //if(node->parent->sibling != NULL) node->parent->sibling->color = "black"; //uncle
       cout << "grandpa is " << grandpa->number << endl;
       if(grandpa != NULL && grandpa != root) grandpa->color = "red";
