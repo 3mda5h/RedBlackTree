@@ -29,22 +29,10 @@ int main()
   char input[100];
   while(strcmp(input, "quit") != 0)
   {
-    cout << "Enter INSERT, DISPLAY, or QUIT" << endl;
+    cout << "Enter ADD, READ, DISPLAY, or QUIT" << endl;
     cin.getline(input, 100);
-    if(strcmp(input, "insert") == 0)
-    {
-      cout << "FILE or CONSOLE?" << endl;
-      cin.getline(input, 100);
-      if(strcmp(input, "file") == 0)
-      {
-        fileInput(tree);
-      }
-      else if(strcmp(input, "console") == 0)
-      {
-        consoleInput(tree);
-        cout << "Insert successful" << endl;
-      }
-    }
+    if(strcmp(input, "add") == 0) consoleInput(tree); 
+    else if(strcmp(input, "read") == 0) fileInput(tree);
     /*else if(strcmp(input, "remove") == 0)
     {
       cout << "Number?" << endl;
@@ -94,6 +82,7 @@ void consoleInput(Tree* tree)
       }
     }
   }
+  cout << "Insert successful" << endl;
 }
 
 //read in list of numbers seperated by spaces from a file
@@ -113,5 +102,5 @@ void fileInput(Tree* tree)
   {
     tree->insert(number);
   }
-  cout << "Input successful" << endl;
+  cout << "Insert successful" << endl;
 }
