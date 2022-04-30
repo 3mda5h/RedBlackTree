@@ -3,11 +3,12 @@
      - The root is black.
      - All leaves (NULL) are black.
      - Both children of every red node are black.
-     - Every simple path from a given node to any of its descendant leaves contains the same number of black nodes.
+     - Every simple path from a given node to any of its descendant leaves 
+       contains the same number of black nodes.
 this balances the bst
-
+(insertion only)
 Emily MacPherson
-4/28/22
+4/29/22
 */
 
 #include <iostream>
@@ -28,7 +29,7 @@ int main()
   char input[100];
   while(strcmp(input, "quit") != 0)
   {
-    cout << "Enter INSERT, REMOVE, SEARCH, DISPLAY, or QUIT" << endl;
+    cout << "Enter INSERT, DISPLAY, or QUIT" << endl;
     cin.getline(input, 100);
     if(strcmp(input, "insert") == 0)
     {
@@ -110,7 +111,6 @@ void fileInput(Tree* tree)
   }
   while (file >> number) //reads in ints from file till end of file reached
   {
-    cout << "inserting number " << number << endl;
     tree->insert(number);
   }
   cout << "Input successful" << endl;
