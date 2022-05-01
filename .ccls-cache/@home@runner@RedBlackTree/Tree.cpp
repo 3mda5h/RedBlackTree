@@ -92,7 +92,7 @@ void Tree::fixInsert(Node* node)
       //left child of node becomes right child of parent
       parent->right = node->left;
       if(parent->right != NULL) parent->right->parent = parent;
-      //parent becomes the right child of node
+      //parent becomes the left child of node
       node->left = parent;
       parent->parent = node;
       //update parent and node pointers
@@ -107,7 +107,7 @@ void Tree::fixInsert(Node* node)
       //tree rotation - node goes to parent's spot 
       grandpa->right = node;
       node->parent = grandpa;
-      //left child of node becomes right child of parent
+      //right child of node becomes left child of parent
       parent->left = node->right;
       if(parent->left != NULL) parent->left->parent = parent;
       //parent becomes the right child of node
@@ -178,7 +178,6 @@ void Tree::caseThree(Node* node)
     {
       node->parent->color = "black";       
       uncle->color = "black";
-      //if(node->parent->sibling != NULL) node->parent->sibling->color = "black"; //uncle
       if(grandpa != NULL && grandpa != root) grandpa->color = "red";
       caseThree(grandpa);
     }
